@@ -25,8 +25,8 @@ def load_config():
     db_config["password"] = os.environ.get("DB_PASSWORD")
     db_config["database"] = os.environ.get("DB_NAME")
 
-    """if any(value is None for value in db_config.values()):
-        raise ValueError("Missing database ENV Variables!")"""
+    if any(value is None for value in db_config.values()):
+        raise ValueError("Missing database ENV Variables!")
 
 # Load config at startup of application
 load_config()
@@ -48,6 +48,7 @@ def submit_report():
         user_id = request.form.get("user_id")
         incident_type = request.form["incident_type"]
         details = request.form["details"]
+        location = request.form.get("location", "")
     except KeyError as e:
         return jsonify({"error": f"Missing required field: {e}"}), 400
     
@@ -58,8 +59,8 @@ def submit_report():
         cursor = connection.cursor()
         try:
             # SQL statement to insert report without user_id
-            sql = "INSERT INTO incidents (incident_type, details, status) VALUES (%s, %s, %s)"
-            values = (incident_type, details, "pending")
+            sql = "INSERT INTO incidents (incident_type, details, status, location) VALUES (%s, %s, %s, %s)"
+            values = (incident_type, details, "pending", location)
             cursor.execute(sql, values)
             connection.commit()
             return jsonify({"message": "Incident report submitted succesfully!"}), 201

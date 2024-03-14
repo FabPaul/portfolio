@@ -1,3 +1,4 @@
 config.py
 .env
 schema.sql
+app.log
