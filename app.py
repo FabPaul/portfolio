@@ -5,14 +5,12 @@
 from flask import Flask, request, jsonify
 import mysql.connector
 import os
+from user import User
+from db_utils import db_config, connect_to_database
+from auth import login, logout
+
 
 # Placeholder for db credentialsloaded from .env
-db_config ={
-    "host": None,
-    "user": None,
-    "password": None,
-    "database": None
-}
 
 app = Flask(__name__)
 
@@ -28,6 +26,7 @@ def load_config():
     if any(value is None for value in db_config.values()):
         raise ValueError("Missing database ENV Variables!")
 
+
 # Load config at startup of application
 load_config()
 
@@ -39,7 +38,7 @@ def connect_to_database():
     except mysql.connector.Error as err:
         print("Error connecting to database", err)
         return None
-    
+
 
 @app.route("/report", methods=["POST"], strict_slashes=False)
 def submit_report():
@@ -51,7 +50,7 @@ def submit_report():
         location = request.form.get("location", "")
     except KeyError as e:
         return jsonify({"error": f"Missing required field: {e}"}), 400
-    
+
     # Connect to db
     connection = connect_to_database()
 
@@ -77,6 +76,18 @@ def submit_report():
 def home():
     """Home route"""
     return "See-Say Cameroon Backened (under development)"
+
+
+@app.route("/login", methods=["POST"])
+def login_route():
+    """Login route (imported from auth.py)"""
+    return login()
+
+
+@app.route("/logout", methods=["GET"])
+def logout_route():
+    """Logout route (imported from auth.py)"""
+    return logout()
 
 
 if __name__ == "__main__":

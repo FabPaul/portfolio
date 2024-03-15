@@ -1,3 +1,4 @@
 .env
 schema.sql
 app.log
+__pycache__
