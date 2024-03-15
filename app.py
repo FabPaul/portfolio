@@ -13,6 +13,7 @@ from auth import login, logout
 # Placeholder for db credentialsloaded from .env
 
 app = Flask(__name__)
+app.secret_key = os.getenv('SECRET_KEY')
 
 
 def load_config():
