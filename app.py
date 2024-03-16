@@ -7,14 +7,14 @@ import mysql.connector
 import os
 from user import User
 from db_utils import db_config, connect_to_database
-from auth import login, logout
+from auth import login, logout, login_manager
 
 
 # Placeholder for db credentialsloaded from .env
 
 app = Flask(__name__)
 app.secret_key = os.getenv('SECRET_KEY')
-
+login_manager.init_app(app)
 
 def load_config():
     """Load config from environment variables"""
