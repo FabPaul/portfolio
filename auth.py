@@ -5,6 +5,7 @@ from flask import Flask, request, jsonify
 from flask_login import login_user, logout_user, LoginManager
 from db_utils import connect_to_database
 from user import User
+import werkzeug.security
 
 app = Flask(__name__)
 login_manager = LoginManager()
@@ -33,7 +34,7 @@ def login():
     # Load user by username
     user = load_user(username)
 
-    if user and user.verify_password(password):
+    if user and werkzeug.security.check_password_hash(user.password_hash, password):
         login_user(user)
         return jsonify({"message": "Login successful!"})
     else:

@@ -2,11 +2,11 @@
 """Flask"""
 
 
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
 import mysql.connector
 import os
 from user import User
-from db_utils import db_config, connect_to_database
+from db_utils import db_config, connect_to_database, create_user
 from auth import login, logout, login_manager
 
 
@@ -71,7 +71,7 @@ def submit_report():
             connection.close()
     else:
         return jsonify({"error": "Database connection failed"}), 500
-
+    
 
 @app.route("/")
 def home():
@@ -79,16 +79,22 @@ def home():
     return "See-Say Cameroon Backened (under development)"
 
 
-@app.route("/login", methods=["POST"])
-def login_route():
-    """Login route (imported from auth.py)"""
-    return login()
+@app.route("/register", methods=["GET", "POST"])
+def register():
+    """Handle registration requests"""
+    if request.method == "GET":
+        return render_template("registration.html")
+    elif request.method == "POST":
+        username = request.form["username"]
+        password = request.form["password"]
+        create_user(username, password)
+        return render_template("registration.html")
+    else:
+        return "Method not allowed", 405
 
 
-@app.route("/logout", methods=["GET"])
-def logout_route():
-    """Logout route (imported from auth.py)"""
-    return logout()
+app.add_url_rule("/login", "login", login, methods=["POST"])
+app.add_url_rule("/logout", "/logout", logout, methods=["GET"])
 
 
 if __name__ == "__main__":
