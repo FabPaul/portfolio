@@ -8,6 +8,7 @@ import os
 from user import User
 from db_utils import db_config, connect_to_database, create_user
 from auth import login, logout, login_manager
+import flask_login
 
 
 # Placeholder for db credentialsloaded from .env
@@ -45,7 +46,8 @@ def connect_to_database():
 def submit_report():
     """Submit a new incident report"""
     try:
-        user_id = request.form.get("user_id")
+        current_user = flask_login.current_user
+        user_id = current_user.id if current_user else None
         incident_type = request.form["incident_type"]
         details = request.form["details"]
         location = request.form.get("location", "")
@@ -59,8 +61,8 @@ def submit_report():
         cursor = connection.cursor()
         try:
             # SQL statement to insert report without user_id
-            sql = "INSERT INTO incidents (incident_type, details, status, location) VALUES (%s, %s, %s, %s)"
-            values = (incident_type, details, "pending", location)
+            sql = "INSERT INTO incidents (user_id, incident_type, details, status, location) VALUES (%s, %s, %s, %s, %s)"
+            values = (user_id, incident_type, details, "pending", location)
             cursor.execute(sql, values)
             connection.commit()
             return jsonify({"message": "Incident report submitted succesfully!"}), 201
