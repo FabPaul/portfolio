@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block title %}See-Say Cameroon - Recent Reports{% endblock %}
+
+{% block content %}
+    <h1>Full Report</h1>
+    <b>Incident Type:</b> {{ report.incident_type }}<br>
+    <b>Location:</b> {{ report.location }}<br>
+    <b>Details:</b> {{ report.details }}<br>
+{% endblock %}

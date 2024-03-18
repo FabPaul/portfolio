@@ -122,5 +122,20 @@ def recent_reports():
     return render_template("recent_reports.html", reports=recent_reports)
 
 
+@app.route("/full_report/<int:report_id>", methods=["GET"], strict_slashes=False)
+def full_report(report_id):
+    """Display the full details of a report"""
+    connection = connect_to_database()
+    cursor = connection.cursor(dictionary=True)
+
+    sql = "SELECT * FROM incidents WHERE id = %s"
+    values = (report_id,)
+    cursor.execute(sql, values)
+    full_report = cursor.fetchone()
+    connection.close()
+
+    return render_template("full_report.html", report = full_report)
+
+
 if __name__ == "__main__":
     app.run(debug=True)

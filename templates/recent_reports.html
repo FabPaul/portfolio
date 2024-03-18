@@ -3,14 +3,14 @@
 {% block title %}See-Say Cameroon - Recent Reports{% endblock %}
 
 {% block content %}
-    <h1> Recent Reports></h1>
+    <h1> Recent Reports:</h1>
     {% if reports %}
     <ul>
         {% for report in reports %}
         <li>
             <b>Incident Type:</b> {{ report.incident_type }}<br>
             <b>Location:</b> {{ report.location }}<br>
-            <b>Details:</b> {{ report.details[:100] }}... (see full report)
+            <b>Details:</b> {{ report.details[:100] }}...<a href="{{ url_for('full_report', report_id=report.id) }}">(see full report)</a><br>
         </li>
         {% endfor %}
     </ul>
