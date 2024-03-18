@@ -52,6 +52,7 @@ def submit_report():
         incident_type = request.form["incident_type"]
         details = request.form["details"]
         location = request.form.get("location", "")
+        status = request.form["status"]
     except KeyError as e:
         return jsonify({"error": f"Missing required field: {e}"}), 400
 
@@ -63,7 +64,7 @@ def submit_report():
         try:
             # SQL statement to insert report without user_id
             sql = "INSERT INTO incidents (user_id, incident_type, details, status, location) VALUES (%s, %s, %s, %s, %s)"
-            values = (user_id, incident_type, details, "pending", location)
+            values = (user_id, incident_type, details, status, location)
             cursor.execute(sql, values)
             connection.commit()
             return jsonify({"message": "Incident report submitted succesfully!"}), 201
