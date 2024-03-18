@@ -41,13 +41,4 @@ def create_user(username, password):
         connection.close()
 
 
-def get_user_by_username(username):
-  """Gets user information by username"""
-  connection = connect_to_database()
-  cursor = connection.cursor()
-  sql = "SELECT * FROM users WHERE username = %s"
-  values = (username,)
-  cursor.execute(sql, values)
-  user = cursor.fetchone()
-  connection.close()
-  return user
+

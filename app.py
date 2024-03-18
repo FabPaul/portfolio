@@ -2,14 +2,15 @@
 """Flask"""
 
 
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, jsonify, render_template, redirect, url_for
 import mysql.connector
 import os
 from user import User
 from db_utils import db_config, connect_to_database, create_user
-from auth import login, logout, login_manager
+from auth import login_manager
 import flask_login
 from datetime import datetime, timedelta
+from flask_login import current_user, login_user, logout_user, login_required
 
 
 # Placeholder for db credentialsloaded from .env
@@ -96,9 +97,39 @@ def register():
     else:
         return "Method not allowed", 405
     
-app.add_url_rule("/login", "login", login, methods=["POST"])
-app.add_url_rule("/logout", "/logout", logout, methods=["GET"])
-    
+"""app.add_url_rule("/login", "login", login, methods=["POST"])
+app.add_url_rule("/logout", "/logout", logout, methods=["GET"])"""
+
+
+@app.route("/login", methods=["GET", "POST"])
+def login():
+    """Login Attempt"""
+    if request.method == "GET":
+        return render_template("login.html")
+    elif request.method == "POST":
+        username = request.form["username"]
+        password = request.form["password"]
+        user = User.authenticate(username, password)
+        if user:
+            login_user(user)
+            return redirect(url_for("home"))
+        else:
+            return "Invalid username or password", 401
+        
+
+@app.route("/logout", methods=["GET"])
+@login_required
+def logout():
+    """Logout attempt"""
+    logout_user()
+    return redirect(url_for("home)"))
+
+
+@app.route("/profile")
+@login_required
+def profile():
+    return f"Welcome {current_user.username}!"
+
 
 @app.route("/report_form")
 def report_form():

@@ -25,24 +25,4 @@ def load_user(user_id):
         return None
 
 
-@app.route("/login", methods=["POST"])
-def login():
-    """Login Attempt"""
-    username = request.form.get("username")
-    password = request.form.get("password")
 
-    # Load user by username
-    user = load_user(username)
-
-    if user and werkzeug.security.check_password_hash(user.password_hash, password):
-        login_user(user)
-        return jsonify({"message": "Login successful!"})
-    else:
-        return jsonify({"error": "Invalid username or password"}), 401
-
-
-@app.route("/logout", methods=["GET"])
-def logout():
-    """Logout attempt"""
-    logout_user()
-    return jsonify({"message": "Logged out successfully!"})
