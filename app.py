@@ -47,7 +47,7 @@ def submit_report():
     """Submit a new incident report"""
     try:
         current_user = flask_login.current_user
-        user_id = current_user.id if current_user else None
+        user_id = current_user.id if current_user.is_authenticated else None
         incident_type = request.form["incident_type"]
         details = request.form["details"]
         location = request.form.get("location", "")
@@ -93,6 +93,11 @@ def register():
         return render_template("registration.html")
     else:
         return "Method not allowed", 405
+    
+
+@app.route("/report_form")
+def report_form():
+  return render_template("report.html")
 
 
 app.add_url_rule("/login", "login", login, methods=["POST"])
