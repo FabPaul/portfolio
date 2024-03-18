@@ -1,9 +1,8 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>User Registration</title>
-</head>
-<body>
+{% extends 'base.html' %}
+
+{% block title %}See-Say Cameroon{% endblock %}
+
+{% block content %}
     <h1>Register New User</h1>
     <form method="POST" action="/register">
         <label for="username">Username:</label>
@@ -14,5 +13,4 @@
         <br>
         <button type="submit">Register</button>
     </form>
-</body>
-</html>
+{% endblock %}

@@ -1,35 +1,33 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <title> See-Say Cameroon - Report Submission</title>
-    </head>
-    <body>
-        <h1> Submit a Report </h1>
-        {% with message =  get_flashed_messages(with_categories=True) %}
-            {% if messages %}
-            <ul class="flashes">
-                {% for category, message in messages %}
-                <li class="flash {{ category }}">{{ message }}</li>
-                {% endfor %}
-            </ul>
-            {% endif %}
-        {% endwith %}
-        <form action="/report" method="post">
-            <label for="incident_type">Incident Type:</label>
-            <select name="incident_type" id="incident_type" required>
-                <option value="Security">Security</option>
-                <option value="Harassment">Harassment</option>
-                <option value="Infrastructure">Infrastructure</option>
-                <option value="Other">Other</option>
-            </select>
-            <label for="details">Details:</label>
-            <textarea name="details" id="details" required></textarea>
-            <label for="location">Location: </label>
-            <input type="text" name="location" id="location" required>
-            <button type="submit">Submit Report</button>
-        </form>
-        {% if crsf_token %}
-        <input type="hidden" name="crsf_token" value="{{ crsf_token }}">
+{% extends 'base.html' %}
+
+{% block title %}See-Say Cameroon{% endblock %}
+
+{% block content %}
+    <h1> Submit a Report </h1>
+    {% with message =  get_flashed_messages(with_categories=True) %}
+        {% if messages %}
+        <ul class="flashes">
+            {% for category, message in messages %}
+            <li class="flash {{ category }}">{{ message }}</li>
+            {% endfor %}
+        </ul>
         {% endif %}
-    </body>
-</html>
+    {% endwith %}
+    <form action="/report" method="post">
+        <label for="incident_type">Incident Type:</label>
+        <select name="incident_type" id="incident_type" required>
+            <option value="Security">Security</option>
+            <option value="Harassment">Harassment</option>
+            <option value="Infrastructure">Infrastructure</option>
+            <option value="Other">Other</option>
+        </select>
+        <label for="details">Details:</label>
+        <textarea name="details" id="details" required></textarea>
+        <label for="location">Location: </label>
+        <input type="text" name="location" id="location" required>
+        <button type="submit">Submit Report</button>
+    </form>
+    {% if crsf_token %}
+    <input type="hidden" name="crsf_token" value="{{ crsf_token }}">
+    {% endif %}
+{% endblock %}
