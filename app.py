@@ -9,6 +9,7 @@ from user import User
 from db_utils import db_config, connect_to_database, create_user
 from auth import login, logout, login_manager
 import flask_login
+from datetime import datetime, timedelta
 
 
 # Placeholder for db credentialsloaded from .env
@@ -94,14 +95,31 @@ def register():
     else:
         return "Method not allowed", 405
     
+app.add_url_rule("/login", "login", login, methods=["POST"])
+app.add_url_rule("/logout", "/logout", logout, methods=["GET"])
+    
 
 @app.route("/report_form")
 def report_form():
+  """Report submission form"""
   return render_template("report.html")
 
 
-app.add_url_rule("/login", "login", login, methods=["POST"])
-app.add_url_rule("/logout", "/logout", logout, methods=["GET"])
+@app.route("/recent_reports", methods=["GET"], strict_slashes=False)
+def recent_reports():
+    """Display recent reports"""
+    connection = connect_to_database()
+    cursor = connection.cursor(dictionary=True)
+
+    sql = "SELECT * FROM incidents WHERE reported_at >= %s"
+    threshold = datetime.now() - timedelta(days=1)
+    values = (threshold,)
+
+    cursor.execute(sql, values)
+    recent_reports = cursor.fetchall()
+    connection.close()
+
+    return render_template("recent_reports.html", reports=recent_reports)
 
 
 if __name__ == "__main__":
