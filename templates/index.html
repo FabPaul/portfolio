@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Welcome to See-Say Camerron, your number One incident report platform {{ current_user.username }}!</h1>
+    {% if form %}
+    {{ wtf.quick_form(form) }}
+    {% endif %}
+    <nav aria-label="Post navigation">
+       
+    </nav>
+{% endblock %}

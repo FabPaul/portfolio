@@ -81,9 +81,10 @@ def submit_report():
     
 
 @app.route("/")
+@app.route("/home")
 def home():
     """Home route"""
-    return "See-Say Cameroon Backened (under development)"
+    return render_template("index.html")
 
 
 @app.route("/register", methods=["GET", "POST"])
@@ -117,7 +118,7 @@ def login():
         if user and check_password_hash(user.password_hash, password):
             login_user(user)
             flash('Login successful!', 'success')
-            return redirect(url_for('profile'))
+            return redirect(url_for('home'))
         else:
             flash('Invalid username or password', 'error')
     return render_template('login.html', title='Login', form=form)

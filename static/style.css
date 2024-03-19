@@ -1,0 +1,22 @@
+/* Styles.css */
+.navbar-nav {
+    display: flex;
+    align-items: center;
+    list-style: none;
+    margin-bottom: 20px;
+    padding: 0;
+}
+
+.nav-item {
+    margin-right: 50px;
+}
+
+.nav-link {
+    color: #000;
+    text-decoration: none;
+}
+
+.nav-link:hover {
+    color: #007bff;
+    text-decoration: underline;
+}
