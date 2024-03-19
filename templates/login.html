@@ -4,21 +4,20 @@
 
 {% block content %}
     <h1>Login</h1>
-    {% with messages = get_flashed_messages() %}
-        {% if messages %}
-            <ul>
-                {% for message in messages %}
-                    <li>{{ message }}</li>
-                {% endfor %}
-            </ul>
-        {% endif %}
-    {% endwith %}
+   
     <form method="POST">
         {{ form.hidden_tag() }}
-        <p>{{ form.username.label }}</p>
-        <p>{{ form.username }}</p>
-        <p>{{ form.password.label }}</p>
-        <p>{{ form.password }}</p>
-        <p>{{ form.submit }}</p>
+    <p>{{ form.username.label }}</p>
+    <p>{{ form.username }}</p>
+    {% if form.username.errors %}
+        <p class="error">{{ form.username.errors[0] }}</p>
+    {% endif %}
+    <p>{{ form.password.label }}</p>
+    <p>{{ form.password }}</p>
+    {% if form.password.errors %}
+        <p class="error">{{ form.password.errors[0] }}</p>
+    {% endif %}
+    <p>{{ form.remember_me }}</p>
+    <p>{{ form.submit }}</p>
     </form>
 {% endblock %}
