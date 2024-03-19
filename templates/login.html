@@ -3,12 +3,22 @@
 {% block title %}See-Say Cameroon - Recent Reports{% endblock %}
 
 {% block content %}
-    <h2>Login</h2>
-    <form method="POST" action="{{ url_for('login') }}">
-        <label for="username">Username:</label><br>
-        <input type="text" id="username" name="username"><br>
-        <label for="password">Password:</label><br>
-        <input type="password" id="password" name="password"><br><br>
-        <button type="submit">Login</button>
+    <h1>Login</h1>
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <ul>
+                {% for message in messages %}
+                    <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+    <form method="POST">
+        {{ form.hidden_tag() }}
+        <p>{{ form.username.label }}</p>
+        <p>{{ form.username }}</p>
+        <p>{{ form.password.label }}</p>
+        <p>{{ form.password }}</p>
+        <p>{{ form.submit }}</p>
     </form>
 {% endblock %}

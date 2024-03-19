@@ -2,7 +2,7 @@
 """Flask"""
 
 
-from flask import Flask, request, jsonify, render_template, redirect, url_for
+from flask import Flask, request, jsonify, render_template, redirect, url_for, flash
 import mysql.connector
 import os
 from user import User
@@ -11,6 +11,8 @@ from auth import login_manager
 import flask_login
 from datetime import datetime, timedelta
 from flask_login import current_user, login_user, logout_user, login_required
+from forms import LoginForm
+from werkzeug.security import check_password_hash
 
 
 # Placeholder for db credentialsloaded from .env
@@ -93,7 +95,7 @@ def register():
         username = request.form["username"]
         password = request.form["password"]
         create_user(username, password)
-        return render_template("registration.html")
+        return redirect(url_for('login'))
     else:
         return "Method not allowed", 405
     
@@ -101,34 +103,36 @@ def register():
 app.add_url_rule("/logout", "/logout", logout, methods=["GET"])"""
 
 
-@app.route("/login", methods=["GET", "POST"])
+@app.route('/login', methods=['GET', 'POST'])
 def login():
-    """Login Attempt"""
-    if request.method == "GET":
-        return render_template("login.html")
-    elif request.method == "POST":
-        username = request.form["username"]
-        password = request.form["password"]
-        user = User.authenticate(username, password)
-        if user:
-            login_user(user)
-            return redirect(url_for("home"))
-        else:
-            return "Invalid username or password", 401
-        
+    if current_user.is_authenticated:
+        return redirect(url_for('home'))
 
-@app.route("/logout", methods=["GET"])
-@login_required
+    form = LoginForm()
+    if form.validate_on_submit():
+        username = form.username.data
+        password = form.password.data
+        user = User.get_user_by_username(username)
+
+        if user and check_password_hash(user.password_hash, password):
+            login_user(user)
+            flash('Login successful!', 'success')
+            return redirect(url_for('profile'))
+        else:
+            flash('Invalid username or password', 'error')
+    return render_template('login.html', title='Login', form=form)
+
+
+@app.route('/logout')
 def logout():
-    """Logout attempt"""
-    logout_user()
-    return redirect(url_for("home)"))
+    flash('You have been logged out')
+    return redirect(url_for('home'))
 
 
 @app.route("/profile")
 @login_required
 def profile():
-    return f"Welcome {current_user.username}!"
+    return render_template('profiles.html')
 
 
 @app.route("/report_form")

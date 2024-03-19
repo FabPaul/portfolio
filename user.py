@@ -13,14 +13,11 @@ class User:
         self.username = username
         self.password_hash = generate_password_hash(password)
 
-    @classmethod
-    def authenticate(cls, username, password):
+    def authenticate(self, password):
         """Check if password matches user's hased password"""
-        user = cls.get_user_by_username(username)
-        if user and check_password_hash(user.password_hash, password):
-            return user
-        return None
+        return check_password_hash(self.password_hash, password)
     
+    @staticmethod
     def get_user_by_username(username):
         """Gets user information by username"""
         connection = connect_to_database()
@@ -28,6 +25,9 @@ class User:
         sql = "SELECT * FROM users WHERE username = %s"
         values = (username,)
         cursor.execute(sql, values)
-        user = cursor.fetchone()
+        user_data = cursor.fetchone()
         connection.close()
-        return user
+        if user_data:
+            return User(user_data[1], user_data[2])
+        else:
+            return None
