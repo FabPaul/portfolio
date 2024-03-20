@@ -84,3 +84,8 @@
 img {
     margin: 0.5cm;
 }
+
+.logo-small {
+  width: 100px;
+  height: 50px;
+}
