@@ -2,7 +2,7 @@
 """Flask"""
 
 
-from flask import Flask, request, jsonify, render_template, redirect, url_for, flash
+from flask import Flask, request, render_template, redirect, url_for, flash
 import mysql.connector
 import os
 from user import User
@@ -10,7 +10,7 @@ from db_utils import db_config, connect_to_database, create_user
 from auth import login_manager
 import flask_login
 from datetime import datetime, timedelta
-from flask_login import current_user, login_user, logout_user, login_required
+from flask_login import current_user, login_user, login_required
 from forms import LoginForm
 from werkzeug.security import check_password_hash
 from images import places
@@ -76,7 +76,6 @@ def submit_report():
             flash("Incident report submitted succesfully!", "success")
             return redirect(url_for("home"))
         except mysql.connector.Error as err:
-            print("Error submitting report, please try again", err)
             flash("Error submitting report", "error")
             return redirect(url_for("home"))
         finally:
@@ -118,13 +117,10 @@ def login():
     form = LoginForm()
     if form.validate_on_submit():
         username = form.username.data
-        print(f"your username is {username}")
         password = form.password.data
-        print(f"your password is {password}")
         user = User.get_user_by_username(username)
 
         if user and check_password_hash(user.password_hash, password):
-            print(f"your password is {password}")
             login_user(user)
             flash('Login successful!', 'success')
             return redirect(url_for('home'))

@@ -17,10 +17,8 @@ def connect_to_database():
     """Connect to the database"""
     try:
         connection = mysql.connector.connect(**db_config)
-        print("Database connection successful!")
         return connection
     except mysql.connector.Error as err:
-        print("Error connecting to database:", err)
         return None
     
 
