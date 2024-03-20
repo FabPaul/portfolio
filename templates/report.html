@@ -4,16 +4,16 @@
 
 {% block content %}
     <h1> Submit a Report </h1>
-    {% with message =  get_flashed_messages(with_categories=True) %}
+    {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
-        <ul class="flashes">
             {% for category, message in messages %}
-            <li class="flash {{ category }}">{{ message }}</li>
+                <div class="alert alert-{{ category }}">
+                    {{ message }}
+                </div>
             {% endfor %}
-        </ul>
         {% endif %}
     {% endwith %}
-    <form action="/report" method="post">
+    <form action="/report" method="POST">
         <label for="incident_type">Incident Type:</label>
         <select name="incident_type" id="incident_type" required>
             <option value="Security">Security</option>

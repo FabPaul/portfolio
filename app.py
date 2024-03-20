@@ -57,7 +57,8 @@ def submit_report():
         location = request.form.get("location", "")
         status = request.form["status"]
     except KeyError as e:
-        return jsonify({"error": f"Missing required field: {e}"}), 400
+        flash("Missing required fied: {e}", "error")
+        return redirect(url_for("report_form"))
 
     # Connect to db
     connection = connect_to_database()
@@ -70,14 +71,17 @@ def submit_report():
             values = (user_id, incident_type, details, status, location)
             cursor.execute(sql, values)
             connection.commit()
-            return jsonify({"message": "Incident report submitted succesfully!"}), 201
+            flash("Incident report submitted succesfully!", "success")
+            return redirect(url_for("home"))
         except mysql.connector.Error as err:
             print("Error submitting report, please try again", err)
-            return jsonify({"error": "Error submitting report"}), 500
+            flash("Error sub,itting report", "error")
+            return redirect(url_for("home"))
         finally:
             connection.close()
     else:
-        return jsonify({"error": "Database connection failed"}), 500
+        flash("Database connection failed", "error")
+        return redirect(url_for("home"))
     
 
 @app.route("/")
