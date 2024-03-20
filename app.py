@@ -77,7 +77,7 @@ def submit_report():
             return redirect(url_for("home"))
         except mysql.connector.Error as err:
             print("Error submitting report, please try again", err)
-            flash("Error sub,itting report", "error")
+            flash("Error submitting report", "error")
             return redirect(url_for("home"))
         finally:
             connection.close()
@@ -118,7 +118,9 @@ def login():
     form = LoginForm()
     if form.validate_on_submit():
         username = form.username.data
+        print(f"your username is {username}")
         password = form.password.data
+        print(f"your password is {password}")
         user = User.get_user_by_username(username)
 
         if user and check_password_hash(user.password_hash, password):
@@ -155,7 +157,7 @@ def recent_reports():
     cursor = connection.cursor(dictionary=True)
 
     sql = "SELECT * FROM incidents WHERE reported_at >= %s"
-    threshold = datetime.now() - timedelta(days=1)
+    threshold = datetime.now() - timedelta(days=7)
     values = (threshold,)
 
     cursor.execute(sql, values)

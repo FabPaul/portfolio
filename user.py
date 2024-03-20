@@ -15,6 +15,9 @@ class User:
 
     def authenticate(self, password):
         """Check if password matches user's hased password"""
+        if self.password_hash is None:
+            print("No password")
+            return False
         return check_password_hash(self.password_hash, password)
     
     @staticmethod
