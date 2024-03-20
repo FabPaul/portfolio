@@ -30,8 +30,9 @@ class LoginForm(FlaskForm):
         cursor = connection.cursor()
         cursor.execute("SELECT password_hash FROM users WHERE username = %s", (self.username.data,))
         user_password_hash = cursor.fetchone()
-        connection.close()
 
+        print(f"Hashed password is {user_password_hash}")
+        print(f"real password is {password.data}")
         if user_password_hash and not check_password_hash(user_password_hash[0], password.data):
             raise ValidationError('Invalid password.')
 

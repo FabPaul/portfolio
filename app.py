@@ -124,6 +124,7 @@ def login():
         user = User.get_user_by_username(username)
 
         if user and check_password_hash(user.password_hash, password):
+            print(f"your password is {password}")
             login_user(user)
             flash('Login successful!', 'success')
             return redirect(url_for('home'))
