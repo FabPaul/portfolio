@@ -13,6 +13,7 @@ from datetime import datetime, timedelta
 from flask_login import current_user, login_user, logout_user, login_required
 from forms import LoginForm
 from werkzeug.security import check_password_hash
+from images import places
 
 
 # Placeholder for db credentialsloaded from .env
@@ -20,6 +21,7 @@ from werkzeug.security import check_password_hash
 app = Flask(__name__)
 app.secret_key = os.getenv('SECRET_KEY')
 login_manager.init_app(app)
+
 
 def load_config():
     """Load config from environment variables"""
@@ -88,7 +90,7 @@ def submit_report():
 @app.route("/home")
 def home():
     """Home route"""
-    return render_template("index.html")
+    return render_template("index.html", places=places)
 
 
 @app.route("/register", methods=["GET", "POST"])

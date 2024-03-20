@@ -4,6 +4,11 @@
 
 {% block content %}
     <h1>Full Report</h1>
+    <style>
+        h1 {
+            margin-top: 3cm;
+        }
+    </style>
     <b>Incident Type:</b> {{ report.incident_type }}<br>
     <b>Location:</b> {{ report.location }}<br>
     <b>Details:</b> {{ report.details }}<br>

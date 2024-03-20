@@ -4,7 +4,11 @@
 
 {% block content %}
     <h1>Login</h1>
-   
+    <style>
+        h1 {
+            margin-top: 3cm;
+        }
+    </style>
     <form method="POST">
         {{ form.hidden_tag() }}
     <p>{{ form.username.label }}</p>
