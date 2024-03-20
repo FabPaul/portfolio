@@ -20,3 +20,17 @@
     color: #007bff;
     text-decoration: underline;
 }
+
+.flash-messages {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.flash-message {
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #f0f0f0;
+}

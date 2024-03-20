@@ -8,11 +8,19 @@
 </head>
     {% with messages = get_flashed_messages() %}
     {% if messages %}
-        <ul class="flash-messages">
+    <ul class="flash-messages">
         {% for message in messages %}
-            <li class="flash-message">{{ message }}</li>
+        <li class="flash-message">{{ message }}</li>
         {% endfor %}
-        </ul>
+    </ul>
+    <script>
+        setTimeout(function() {
+        var flashMessages = document.querySelectorAll('.flash-message');
+        flashMessages.forEach(function(message) {
+            message.style.display = 'none';
+        });
+        }, 5000);
+    </script>
     {% endif %}
     {% endwith %}
 <body>
