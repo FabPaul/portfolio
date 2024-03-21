@@ -8,6 +8,9 @@
         h1 {
             margin-top: 4cm;
         }
+        .form-group {
+            margin-bottom: 1cm;
+        }
     </style>
     {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
@@ -19,26 +22,34 @@
         {% endif %}
     {% endwith %}
     <form action="/report" method="POST">
-        <label for="incident_type">Incident Type:</label>
-        <select name="incident_type" id="incident_type" required>
-            <option value="Security">Security</option>
-            <option value="Harassment">Harassment</option>
-            <option value="Infrastructure">Infrastructure</option>
-            <option value="weather">Weather Condition</option>
-            <option value="gaz">Fuel shortage</option>
-            <option value="power">Power Supply</option>
-            <option value="Other">Other</option>
-        </select><br>
-        <label for="details">Details:</label><br>
-        <textarea name="details" id="details" required></textarea><br>
-        <label for="location">Location: </label><br>
-        <input type="text" id="location" name="location"><br>
-        <label for="status">Status:</label><br>
-        <select id="status" name="status" required>
-            <option value="pending" selected>Pending</option>
-            <option value="investigating">Under Investigation</option>
-            <option value="resolved">Resolved</option>
-        </select><br>
+        <div class="form-group">
+            <label for="incident_type">Incident Type:</label>
+            <select name="incident_type" id="incident_type" required>
+                <option value="Security">Security</option>
+                <option value="Harassment">Harassment</option>
+                <option value="Infrastructure">Infrastructure</option>
+                <option value="weather">Weather Condition</option>
+                <option value="gaz">Fuel shortage</option>
+                <option value="power">Power Supply</option>
+                <option value="Other">Other</option>
+            </select><br>
+        </div>
+        <div class="form-group">
+            <label for="details">Details:</label><br>
+            <textarea name="details" id="details" required></textarea><br>
+        </div>
+        <div class="form-group">
+            <label for="location">Location: </label><br>
+            <input type="text" id="location" name="location"><br>
+        </div>
+        <div class="form-group">
+            <label for="status">Status:</label><br>
+            <select id="status" name="status" required>
+                <option value="pending" selected>Pending</option>
+                <option value="investigating">Under Investigation</option>
+                <option value="resolved">Resolved</option>
+            </select><br>
+        </div>
         <button type="submit">Submit Report</button>
     </form>
     {% if crsf_token %}
