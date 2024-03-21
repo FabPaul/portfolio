@@ -160,9 +160,9 @@ def recent_reports():
     connection = connect_to_database()
     cursor = connection.cursor(dictionary=True)
 
-    sql = "SELECT * FROM incidents WHERE reported_at >= %s ORDER BY incident_type"
+    sql = "SELECT * FROM incidents WHERE reported_at >= %s AND status IN (%s, %s) ORDER BY incident_type"
     threshold = datetime.now() - timedelta(days=7)
-    values = (threshold,)
+    values = (threshold, "pending", "investigating")
 
     cursor.execute(sql, values)
     recent_reports = cursor.fetchall()
