@@ -153,7 +153,7 @@ def recent_reports():
     connection = connect_to_database()
     cursor = connection.cursor(dictionary=True)
 
-    sql = "SELECT * FROM incidents WHERE reported_at >= %s"
+    sql = "SELECT * FROM incidents WHERE reported_at >= %s ORDER BY incident_type"
     threshold = datetime.now() - timedelta(days=7)
     values = (threshold,)
 

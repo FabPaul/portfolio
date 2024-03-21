@@ -3,23 +3,20 @@
 {% block title %}See-Say Cameroon - Recent Reports{% endblock %}
 
 {% block content %}
-    <h1> Recent Reports:</h1>
-    <style>
-        h1 {
-            margin-top: 4cm;
-        }
-    </style>
+<div class="container">
+    <h1 class="heading">Recent Reports</h1>
     {% if reports %}
-    <ul>
+    <div class="reports-container">
         {% for report in reports %}
-        <li>
-            <b>Incident Type:</b> {{ report.incident_type }}<br>
-            <b>Location:</b> {{ report.location }}<br>
-            <b>Details:</b> {{ report.details[:100] }}...<a href="{{ url_for('full_report', report_id=report.id) }}">(see full report)</a><br>
-        </li>
+        <div class="report-card">
+            <h2 class="report-type">{{ report.incident_type }}</h2>
+            <p class="report-location"><strong>Location:</strong> {{ report.location }}</p>
+            <p class="report-details"><strong>Details:</strong> {{ report.details[:100] }}... <a href="{{ url_for('full_report', report_id=report.id) }}" target="_blank">(see full report)</a></p>
+        </div>
         {% endfor %}
-    </ul>
+    </div>
     {% else %}
-        <p>No recent reports found.</p>
+    <p class="no-reports">No recent reports found.</p>
     {% endif %}
+</div>
 {% endblock %}
