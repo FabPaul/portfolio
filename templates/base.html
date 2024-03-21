@@ -6,23 +6,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 
 </head>
-    {% with messages = get_flashed_messages() %}
-    {% if messages %}
-    <ul class="flash-messages">
-        {% for message in messages %}
-        <li class="flash-message">{{ message }}</li>
-        {% endfor %}
-    </ul>
-    <script>
-        setTimeout(function() {
-        var flashMessages = document.querySelectorAll('.flash-message');
-        flashMessages.forEach(function(message) {
-            message.style.display = 'none';
-        });
-        }, 5000);
-    </script>
-    {% endif %}
-    {% endwith %}
+    
 <body>
     <header>
         <div class="top-line"></div>
@@ -69,7 +53,25 @@
             </li>
             {% endif %}
           </ul>
-          
+          <div class="flash-container">
+            {% with messages = get_flashed_messages() %}
+            {% if messages %}
+            <ul class="flash-messages">
+                {% for message in messages %}
+                <li class="flash-message">{{ message }}</li>
+                {% endfor %}
+            </ul>
+            <script>
+                setTimeout(function() {
+                var flashMessages = document.querySelectorAll('.flash-message');
+                flashMessages.forEach(function(message) {
+                    message.style.display = 'none';
+                });
+                }, 5000);
+            </script>
+            {% endif %}
+            {% endwith %}
+          </div>
             
           </ul>
         </div>
@@ -79,6 +81,7 @@
         <div>
         {% block content %}{% endblock %}
     </div>
+    
     <footer >
             &copy; 2024 See-Say Cameroon | Paul Fopa | paulfopa0@gmail.com 
     </footer>
