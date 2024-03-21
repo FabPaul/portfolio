@@ -4,86 +4,77 @@
     <title>{% block title %}{% endblock %}</title>
     <link rel="icon" type="image/png" href="{{ url_for('static', filename='../static/images/header.png') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-
 </head>
-    
 <body>
     <header>
         <div class="top-line"></div>
-        <div class="header-content">
-            
-                <!-- h1>See-Say Cameroon</h1 -->
-            </a>
-        </div>
         <nav class="navbar navbar-expand-lg bg-body-tertiary fixed-top"></nav>
-    <nav class="navbar navbar-expand-lg bg-body-tertiary">
-      <div class="container">
-        <a href="{{ url_for('home') }}" class="logo-link">
-                <img src="{{ url_for('static', filename='../static/images/logo.jpeg') }}" alt="See-Say Cameroon logo" class="logo logo-small">
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div style="position: fixed; top: 10px; right: 100px;">
+        <nav class="navbar navbar-expand-lg bg-body-tertiary">
+            <div class="container">
+                <a href="{{ url_for('home') }}" class="logo-link">
+                    <img src="{{ url_for('static', filename='../static/images/logo.jpeg') }}" alt="See-Say Cameroon logo" class="logo logo-small">
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div style="position: fixed; top: 10px; right: 100px;">
                     <p>Current Time: <span id="current-time"></span></p>
+                </div>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link" aria-current="page" href="{{ url_for('home') }}">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" aria-current="page" href="{{ url_for('report_form') }}">Report An Incident</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" aria-current="page" href="{{ url_for('recent_reports') }}">Recent Reports</a>
+                        </li>
+                        {% if current_user.is_anonymous %}
+                        <li class="nav-item">
+                            <a class="nav-link" aria-current="page" href="{{ url_for('login') }}">Login</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" aria-current="page" href="{{ url_for('register') }}">Register</a>
+                        </li>
+                        {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link" aria-current="page" href="{{ url_for('user', username=current_user.username) }}">Profile</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" aria-current="page" href="{{ url_for('logout') }}">Logout</a>
+                        </li>
+                        {% endif %}
+                    </ul>
+                    <div class="flash-container">
+                        {% with messages = get_flashed_messages() %}
+                        {% if messages %}
+                        <ul class="flash-messages">
+                            {% for message in messages %}
+                            <li class="flash-message">{{ message }}</li>
+                            {% endfor %}
+                        </ul>
+                        <script>
+                            setTimeout(function() {
+                            var flashMessages = document.querySelectorAll('.flash-message');
+                            flashMessages.forEach(function(message) {
+                                message.style.display = 'none';
+                            });
+                            }, 5000);
+                        </script>
+                        {% endif %}
+                        {% endwith %}
+                    </div>
+                </div>
             </div>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            <li class="nav-item">
-              <a class="nav-link" aria-current="page" href="{{ url_for('home') }}">Home</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" aria-current="page" href="{{ url_for('report_form') }}">Report An Incident</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" aria-current="page" href="{{ url_for('recent_reports') }}">Recent Reports</a>
-            </li>
-            {% if current_user.is_anonymous %}
-            <li class="nav-item">
-              <a class="nav-link" aria-current="page" href="{{ url_for('login') }}">Login</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" aria-current="page" href="{{ url_for('register') }}">Register</a>
-            </li>
-            {% else %}
-            <li class="nav-item">
-              <a class="nav-link" aria-current="page" href="{{ url_for('user', username=current_user.username) }}">Profile</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" aria-current="page" href="{{ url_for('logout') }}">Logout</a>
-            </li>
-            {% endif %}
-          </ul>
-          <div class="flash-container">
-            {% with messages = get_flashed_messages() %}
-            {% if messages %}
-            <ul class="flash-messages">
-                {% for message in messages %}
-                <li class="flash-message">{{ message }}</li>
-                {% endfor %}
-            </ul>
-            <script>
-                setTimeout(function() {
-                var flashMessages = document.querySelectorAll('.flash-message');
-                flashMessages.forEach(function(message) {
-                    message.style.display = 'none';
-                });
-                }, 5000);
-            </script>
-            {% endif %}
-            {% endwith %}
-          </div>
-            
-          </ul>
-        </div>
-      </div>
-    </nav>
+        </nav>
     </header>
-        <div>
+    <div>
         {% block content %}{% endblock %}
     </div>
-    
-    <footer >
-            &copy; 2024 See-Say Cameroon | Paul Fopa | paulfopa0@gmail.com 
+    <footer>
+        &copy; 2024 See-Say Cameroon | Paul Fopa | paulfopa0@gmail.com 
     </footer>
     <script>
         function updateTime() {
