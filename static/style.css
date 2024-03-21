@@ -146,3 +146,27 @@ img {
     color: inherit;
     border: none;
 }
+
+footer {
+    background-color: #f0f0f0;
+    padding: 40px 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.footer-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    width: 100%;
+    margin: 0 auto;
+}
+
+.footer-section {
+    padding: 10px;
+}
+
+.footer-section h3 {
+    margin-bottom: 1
+}
