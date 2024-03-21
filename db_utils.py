@@ -20,7 +20,7 @@ def connect_to_database():
         return connection
     except mysql.connector.Error as err:
         return None
-    
+
 
 def create_user(username, password):
     """Creates a new user in the database"""
@@ -37,6 +37,3 @@ def create_user(username, password):
         print(f"Error creating user: {err}")
     finally:
         connection.close()
-
-
-

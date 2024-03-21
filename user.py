@@ -16,7 +16,7 @@ class User:
     def authenticate(self, password):
         """Check if password matches user's hased password"""
         return check_password_hash(self.password_hash, password)
-    
+
     @staticmethod
     def get_user_by_username(username):
         """Gets user information by username"""

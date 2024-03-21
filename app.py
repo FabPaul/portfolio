@@ -68,7 +68,8 @@ def submit_report():
         cursor = connection.cursor()
         try:
             # SQL statement to insert report without user_id
-            sql = "INSERT INTO incidents (user_id, incident_type, details, status, location) VALUES (%s, %s, %s, %s, %s)"
+            sql = """INSERT INTO incidents (user_id, incident_type, details,
+            status, location) VALUES (%s, %s, %s, %s, %s)"""
             values = (user_id, incident_type, details, status, location)
             cursor.execute(sql, values)
             connection.commit()
@@ -82,7 +83,7 @@ def submit_report():
     else:
         flash("Database connection failed", "error")
         return redirect(url_for("home"))
-    
+
 
 @app.route("/")
 @app.route("/home")
@@ -111,7 +112,8 @@ def register():
         return redirect(url_for('login'))
     else:
         return "Method not allowed", 405
-    
+
+
 """app.add_url_rule("/login", "login", login, methods=["POST"])
 app.add_url_rule("/logout", "/logout", logout, methods=["GET"])"""
 
@@ -150,8 +152,8 @@ def profile():
 
 @app.route("/report_form")
 def report_form():
-  """Report submission form"""
-  return render_template("report.html")
+    """Report submission form"""
+    return render_template("report.html")
 
 
 @app.route("/recent_reports", methods=["GET"], strict_slashes=False)
@@ -160,7 +162,8 @@ def recent_reports():
     connection = connect_to_database()
     cursor = connection.cursor(dictionary=True)
 
-    sql = "SELECT * FROM incidents WHERE reported_at >= %s AND status IN (%s, %s) ORDER BY incident_type"
+    sql = """SELECT * FROM incidents WHERE reported_at >=%s
+    AND status IN (%s, %s) ORDER BY incident_type"""
     threshold = datetime.now() - timedelta(days=7)
     values = (threshold, "pending", "investigating")
 
@@ -171,7 +174,8 @@ def recent_reports():
     return render_template("recent_reports.html", reports=recent_reports)
 
 
-@app.route("/full_report/<int:report_id>", methods=["GET"], strict_slashes=False)
+@app.route("/full_report/<int:report_id>", methods=["GET"],
+           strict_slashes=False)
 def full_report(report_id):
     """Display the full details of a report"""
     connection = connect_to_database()
@@ -183,7 +187,7 @@ def full_report(report_id):
     full_report = cursor.fetchone()
     connection.close()
 
-    return render_template("full_report.html", report = full_report)
+    return render_template("full_report.html", report=full_report)
 
 
 if __name__ == "__main__":
