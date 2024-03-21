@@ -3,21 +3,23 @@
 {% block title %}See-Say Cameroon{% endblock %}
 
 {% block content %}
-    <h1>Welcome to See-Say Cameroon, your number One incident report platform {{ current_user.username }}!</h1>
-    <style>
-        h1 {
-            margin-top: 4cm;
-        }
-    </style>
-    {% if form %}
-    {{ wtf.quick_form(form) }}
-    {% endif %}
-    <div class="image-grid">
+  <style>
+    h1 {
+        margin-top: 4cm;
+    }
+  </style>
+  <h1>Explore Cameroon's Finest Attractions</h1>
+  <div class="image-grid">
     {% for place in places %}
-      <a href="{{ place.link }}">  <img src="{{ url_for('static', filename='images/' + place.image) }}" alt="{{ place.name }}">
-        <div class="info">
-          <b>{{ place.name }}</b>  <p>{{ place.description }}</p>  </div>
+    <div class="image-card">
+      <a href="{{ place['link'] }}" target="_blank">
+        <img src="{{ url_for('static', filename='images/' + place['image']) }}" alt="{{ place['name'] }}">
       </a>
+      <div class="image-details">
+        <h3><b>{{ place['name'] }}</b></h3>
+        <p>{{ place['description'] }}</p>
+      </div>
+    </div>
     {% endfor %}
   </div>
-{% endblock %}
+  {% endblock %}
