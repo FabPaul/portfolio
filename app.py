@@ -13,7 +13,6 @@ from datetime import datetime, timedelta
 from flask_login import current_user, login_user, login_required
 from forms import LoginForm
 from werkzeug.security import check_password_hash
-from images import places
 
 
 # Placeholder for db credentialsloaded from .env
@@ -89,6 +88,14 @@ def submit_report():
 @app.route("/home")
 def home():
     """Home route"""
+    connection = connect_to_database()
+    cursor = connection.cursor(dictionary=True)
+
+    query = "SELECT * FROM places"
+    cursor.execute(query)
+    places = cursor.fetchall()
+    cursor.close()
+    connection.close()
     return render_template("index.html", places=places)
 
 
