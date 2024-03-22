@@ -7,7 +7,7 @@ import mysql.connector
 import os
 from user import User
 from db_utils import db_config, connect_to_database, create_user
-from auth import login_manager
+from auth import login_manager, load_user
 import flask_login
 from datetime import datetime, timedelta
 from flask_login import current_user, login_user, login_required
@@ -101,9 +101,9 @@ def home():
     return render_template("index.html", places=places)
 
 
-"""@app.route("/register", methods=["GET", "POST"])
+@app.route("/register", methods=["GET", "POST"])
 def register():
-    Handle registration requests
+    """Handle registration requests"""
     if request.method == "GET":
         return render_template("registration.html")
     elif request.method == "POST":
@@ -112,14 +112,14 @@ def register():
         create_user(username, password)
         return redirect(url_for('login'))
     else:
-        return "Method not allowed", 405"""
+        return "Method not allowed", 405
 
 
 """app.add_url_rule("/login", "login", login, methods=["POST"])
 app.add_url_rule("/logout", "/logout", logout, methods=["GET"])"""
 
 
-"""@app.route('/login', methods=['GET', 'POST'])
+@app.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
         return redirect(url_for('home'))
@@ -138,7 +138,7 @@ def login():
             flash('Invalid username or password', 'error')
     return render_template('login.html', title='Login', form=form)
 
-
+"""
 @app.route('/logout')
 def logout():
     flash('You have been logged out')

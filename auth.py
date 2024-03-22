@@ -12,15 +12,9 @@ login_manager.init_app(app)
 
 
 @login_manager.user_loader
-def load_user(user_id):
+def load_user(username):
     """Load user object by ID"""
-    connection = connect_to_database()
-    cursor = connection.cursor()
-    cursor.execute("SELECT * FROM users WHERE id = %s", (user_id,))
-    user_data = cursor.fetchone()
-
-    print("User data", user_data)
-    if user_data:
-        User(user_data[1], user_data[2])
-    else:
-        return None
+    user = User.get_user_by_username(username)
+    if user:
+        return User(user.id, user.username, user.password_hash)
+    return None
