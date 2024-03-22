@@ -9,6 +9,7 @@ from db_utils import db_config, connect_to_database, create_user
 from auth import login_manager
 import flask_login
 from datetime import datetime, timedelta
+import requests
 
 
 # Placeholder for db credentialsloaded from .env
@@ -16,7 +17,7 @@ from datetime import datetime, timedelta
 app = Flask(__name__)
 app.secret_key = os.getenv('SECRET_KEY')
 login_manager.init_app(app)
-
+API_KEY = os.getenv("API_KEY")
 
 def load_config():
     """Load config from environment variables"""
@@ -81,16 +82,18 @@ def submit_report():
         return redirect(url_for("home"))
     
 
-@app.route("/images/<filename>")
-def get_image(filename):
-    return send_from_directory("static/images", filename)
-
-
 @app.route("/")
 @app.route("/home")
 def home():
-    """Home route"""
-    connection = connect_to_database()
+    """Home route displaying recent places and weather for a city"""
+    city = request.args.get("city")  # Get city name from query string
+    weather_data = None
+
+    # Fetch weather data (if city provided)
+    if city:
+        weather_data = get_weather_data(city)
+
+    connection = connect_to_database()  # Assuming your database connection function
     cursor = connection.cursor(dictionary=True)
 
     query = "SELECT * FROM places ORDER BY name"
@@ -98,7 +101,24 @@ def home():
     places = cursor.fetchall()
     cursor.close()
     connection.close()
-    return render_template("index.html", places=places)
+
+    return render_template("index.html", places=places, weather_data=weather_data)
+
+
+def get_weather_data(city):
+    """Fetches weather data from OpenWeatherMap API"""
+    url = f"https://api.openweathermap.org/data/2.5/weather?q={city}&appid={API_KEY}"
+    try:
+        response = requests.get(url)
+        response.raise_for_status()  # Raise exception for non-200 status codes
+        return response.json()  # Parse JSON response
+    except requests.exceptions.RequestException as e:
+        print(f"Error fetching weather data: {e}")
+        return None
+
+@app.route("/images/<filename>")
+def get_image(filename):
+    return send_from_directory("static/images", filename)
 
 
 @app.route("/register", methods=["GET", "POST"])

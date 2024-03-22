@@ -9,6 +9,13 @@
     }
   </style>
   <h1>Explore Cameroon's Finest Attractions</h1>
+  <h2>Weather</h2>
+  {% if weather_data is not none %}
+    <p>City: {{ weather_data.name }}</p>
+    <p>Temperature: {{ weather_data.main.temp -273.15 }}°C</p>
+    {% else %}
+    <p>Weather data not available for this city.</p>
+  {% endif %}
   <div class="image-grid">
     {% for place in places %}
     <div class="image-card">
