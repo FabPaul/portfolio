@@ -31,21 +31,7 @@
                         <li class="nav-item">
                             <a class="nav-link" aria-current="page" href="{{ url_for('recent_reports') }}">Recent Reports</a>
                         </li>
-                        {% if current_user.is_anonymous %}
-                        <li class="nav-item">
-                            <a class="nav-link" aria-current="page" href="{{ url_for('login') }}">Login</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" aria-current="page" href="{{ url_for('register') }}">Register</a>
-                        </li>
-                        {% else %}
-                        <li class="nav-item">
-                            <a class="nav-link" aria-current="page" href="{{ url_for('user', username=current_user.username) }}">Profile</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" aria-current="page" href="{{ url_for('logout') }}">Logout</a>
-                        </li>
-                        {% endif %}
+
                     </ul>
                     <div class="flash-container">
                         {% with messages = get_flashed_messages() %}

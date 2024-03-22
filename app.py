@@ -13,6 +13,7 @@ from datetime import datetime, timedelta
 from flask_login import current_user, login_user, login_required
 from forms import LoginForm
 from werkzeug.security import check_password_hash
+import io
 
 
 # Placeholder for db credentialsloaded from .env
@@ -100,9 +101,9 @@ def home():
     return render_template("index.html", places=places)
 
 
-@app.route("/register", methods=["GET", "POST"])
+"""@app.route("/register", methods=["GET", "POST"])
 def register():
-    """Handle registration requests"""
+    Handle registration requests
     if request.method == "GET":
         return render_template("registration.html")
     elif request.method == "POST":
@@ -111,14 +112,14 @@ def register():
         create_user(username, password)
         return redirect(url_for('login'))
     else:
-        return "Method not allowed", 405
+        return "Method not allowed", 405"""
 
 
 """app.add_url_rule("/login", "login", login, methods=["POST"])
 app.add_url_rule("/logout", "/logout", logout, methods=["GET"])"""
 
 
-@app.route('/login', methods=['GET', 'POST'])
+"""@app.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
         return redirect(url_for('home'))
@@ -147,7 +148,7 @@ def logout():
 @app.route("/profile")
 @login_required
 def profile():
-    return render_template('profiles.html')
+    return render_template('profiles.html')"""
 
 
 @app.route("/report_form")
