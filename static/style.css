@@ -5,10 +5,11 @@
     list-style: none;
     margin-bottom: 20px;
     padding: 0;
+    margin-top: auto;
 }
 
 .nav-item {
-    margin-right: 50px;
+    margin-right: 60px;
 }
 
 .nav-link {
@@ -44,7 +45,7 @@
     top: 0;
     width: 100%;
     z-index: 1000;
-    background-color: #ffffff02;
+    background-color: #ffffff;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
@@ -90,8 +91,8 @@ img {
 }
 
 .logo-small {
-  width: 100px;
-  height: 50px;
+  width: 25%;
+  height: 25%;
 }
 
 .heading {
@@ -148,8 +149,10 @@ img {
 }
 
 footer {
+    background: linear-gradient(to right, #007a5e, #ce1126,  #fcd116);
+    color: #fff;
     background-color: #f0f0f0;
-    padding: 40px 0;
+    padding: 10px 0;
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
@@ -158,7 +161,7 @@ footer {
 .footer-container {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 20px;
+    gap: 10px;
     width: 100%;
     margin: 0 auto;
 }
@@ -169,4 +172,25 @@ footer {
 
 .footer-section h3 {
     margin-bottom: 1
+}
+
+.background-image {
+    background-image: url(images/cameroon.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0.2;
+    z-index: -1;
+}
+
+.image-details h3 {
+    color: #007bff;
+}
+
+.image-details p {
+    color: #000000;
 }

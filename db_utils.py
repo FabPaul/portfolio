@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import mysql.connector
 from werkzeug.security import generate_password_hash
 from dotenv import load_dotenv

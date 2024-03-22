@@ -5,15 +5,10 @@
 from flask import Flask, request, render_template, redirect, url_for, flash
 import mysql.connector
 import os
-from user import User
 from db_utils import db_config, connect_to_database, create_user
-from auth import login_manager, load_user
+from auth import login_manager
 import flask_login
 from datetime import datetime, timedelta
-from flask_login import current_user, login_user, login_required
-from forms import LoginForm
-from werkzeug.security import check_password_hash
-import io
 
 
 # Placeholder for db credentialsloaded from .env
@@ -93,7 +88,7 @@ def home():
     connection = connect_to_database()
     cursor = connection.cursor(dictionary=True)
 
-    query = "SELECT * FROM places"
+    query = "SELECT * FROM places ORDER BY name"
     cursor.execute(query)
     places = cursor.fetchall()
     cursor.close()
@@ -119,10 +114,10 @@ def register():
 app.add_url_rule("/logout", "/logout", logout, methods=["GET"])"""
 
 
-@app.route('/login', methods=['GET', 'POST'])
+"""@app.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
-        return redirect(url_for('home'))
+        return redirect(url_for('profile'))
 
     form = LoginForm()
     if form.validate_on_submit():
@@ -132,24 +127,25 @@ def login():
 
         if user and check_password_hash(user.password_hash, password):
             login_user(user)
-            flash('Login successful!', 'success')
-            return redirect(url_for('home'))
+            # flash('Login successful!', 'success')
+            return redirect(url_for('profile'))
         else:
             flash('Invalid username or password', 'error')
     return render_template('login.html', title='Login', form=form)
 
-"""
+
+@app.route("/profile", methods=["GET"])
+@login_required
+def profile():
+    return render_template('profiles.html')
+
+
+
 @app.route('/logout')
 def logout():
     flash('You have been logged out')
     return redirect(url_for('home'))
-
-
-@app.route("/profile")
-@login_required
-def profile():
-    return render_template('profiles.html')"""
-
+"""
 
 @app.route("/report_form")
 def report_form():
