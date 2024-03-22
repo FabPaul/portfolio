@@ -2,7 +2,7 @@
 """Flask"""
 
 
-from flask import Flask, request, render_template, redirect, url_for, flash
+from flask import Flask, request, render_template, redirect, url_for, flash, send_from_directory
 import mysql.connector
 import os
 from db_utils import db_config, connect_to_database, create_user
@@ -79,6 +79,11 @@ def submit_report():
     else:
         flash("Database connection failed", "error")
         return redirect(url_for("home"))
+    
+
+@app.route("/images/<filename>")
+def get_image(filename):
+    return send_from_directory("static/images", filename)
 
 
 @app.route("/")
