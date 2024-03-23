@@ -10,16 +10,37 @@
     <p>{{ region.description }}</p>
 
     <h2>Top Cities in {{ region.name }} Region Cameroon</h2>
+    
     <ul>
       {% if top_cities %}
+      <div class="top-cities-container">
           {% for city in top_cities %}
-              <li>
-                    {{ city.city_name }}
-              </li>
+          <div class="city-block">
+            <a href="{{ url_for('city_details', city_id=city['id']) }}">
+                <h2>{{ city.city_name }}</h2>
+            </a>
+          </div>
           {% endfor %}
+      </div>
       {% else %}
           <p>No top cities data available for this region.</p>
       {% endif %}
+    </ul>
+    <ul>
+      <h2>Places to Visit in {{ region.name }}</h2>
+      <div class="image-grid">
+        {% for place in places %}
+        <div class="image-card">
+          <a href="{{ place['link'] }}" target="_blank">
+            <img src="{{ url_for('get_image', filename=place['image']) }}" alt="{{ place['name'] }}">
+          </a>
+          <div class="image-details">
+            <h3><b>{{ place['name'] }}</b></h3>
+            <p>{{ place['description'] }}</p>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
     </ul>
   
   {% endblock %}

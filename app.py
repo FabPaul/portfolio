@@ -124,22 +124,57 @@ def region_details(region_id):
     cursor.execute(query, values)
     top_cities = cursor.fetchall()
 
+    places_query = "SELECT * FROM places WHERE region = %s"
+    places_values = (region['name'],)
+    cursor.execute(places_query, places_values)
+
+    places = cursor.fetchall()
+
     cursor.close()
     connection.close()
 
-    return render_template("region_details.html", region=region, top_cities=top_cities)
+    return render_template("region_details.html", region=region, top_cities=top_cities, places=places)
 
 
-def get_weather_data(city):
-    """Fetches weather data from OpenWeatherMap API"""
-    url = f"https://api.openweathermap.org/data/2.5/weather?q={city}&appid={API_KEY}"
+@app.route("/cities/<int:city_id>")
+def city_details(city_id):
+    connection = connect_to_database()
+    cursor = connection.cursor(dictionary=True)
+
+    query = "SELECT * FROM top_cities WHERE id = %s"
+    values = (city_id,)
+    cursor.execute(query, values)
+
+    city = cursor.fetchone()
+
+    if not city:
+        flash("City not found!", "error")
+        return redirect(url_for("home"))
+
+
+    base_url = "https://api.openweathermap.org/data/2.5/weather"
+
+    params = {"q": city['city_name'], "appid": API_KEY}
+
     try:
-        response = requests.get(url)
+        response = requests.get(base_url, params=params)
         response.raise_for_status()
-        return response.json()
+        data = response.json()
+
+        weather_data = {
+            "temperature": round(data["main"]["temp"] - 273.15, 1),
+            "description": data["weather"][0]["description"],
+        }
+
     except requests.exceptions.RequestException as e:
         print(f"Error fetching weather data: {e}")
-        return None
+        weather_data = None
+
+    cursor.close()
+    connection.close()
+
+    return render_template("city_details.html", city=city, weather_data=weather_data)
+
 
 @app.route("/images/<filename>")
 def get_image(filename):

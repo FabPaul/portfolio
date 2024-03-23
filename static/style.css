@@ -194,3 +194,13 @@ footer {
 .image-details p {
     color: #000000;
 }
+
+.region-card {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    margin: 10px;
+    width: 300px;
+    float: left;
+    background-color: #f9f9f9;
+}
