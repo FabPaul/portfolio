@@ -86,23 +86,48 @@ def submit_report():
 @app.route("/home")
 def home():
     """Home route displaying recent places and weather for a city"""
-    city = request.args.get("city")  # Get city name from query string
+    city = request.args.get("city")
     weather_data = None
 
-    # Fetch weather data (if city provided)
     if city:
         weather_data = get_weather_data(city)
 
-    connection = connect_to_database()  # Assuming your database connection function
+    connection = connect_to_database()
     cursor = connection.cursor(dictionary=True)
 
-    query = "SELECT * FROM places ORDER BY name"
+    query = "SELECT * FROM regions LIMIT 10"
     cursor.execute(query)
-    places = cursor.fetchall()
+    regions = cursor.fetchall()
     cursor.close()
     connection.close()
 
-    return render_template("index.html", places=places, weather_data=weather_data)
+    return render_template("index.html", regions=regions, weather_data=weather_data)
+
+
+@app.route("/top_cities/<int:region_id>")
+def region_details(region_id):
+    connection = connect_to_database()
+    cursor = connection.cursor(dictionary=True)
+
+    query = "SELECT * FROM regions WHERE id = %s"
+    values = (region_id,)
+    cursor.execute(query, values)
+
+    region = cursor.fetchone()
+
+    if not region:
+        flash("Region not found!", "error")
+        return redirect(url_for("home"))
+
+    query = "SELECT * FROM top_cities WHERE region_id = %s"
+    values = (region_id,)
+    cursor.execute(query, values)
+    top_cities = cursor.fetchall()
+
+    cursor.close()
+    connection.close()
+
+    return render_template("region_details.html", region=region, top_cities=top_cities)
 
 
 def get_weather_data(city):
@@ -110,8 +135,8 @@ def get_weather_data(city):
     url = f"https://api.openweathermap.org/data/2.5/weather?q={city}&appid={API_KEY}"
     try:
         response = requests.get(url)
-        response.raise_for_status()  # Raise exception for non-200 status codes
-        return response.json()  # Parse JSON response
+        response.raise_for_status()
+        return response.json()
     except requests.exceptions.RequestException as e:
         print(f"Error fetching weather data: {e}")
         return None

@@ -5,3 +5,5 @@ __pycache__
 images
 cleanup
 profiles.html
+images.py
+top_cities.py

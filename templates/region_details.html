@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}See-Say Cameroon - {{ region.name }}{% endblock %}  {% block content %}
+  <h1>{{ region.name }} Region</h1>
+  <style>
+    h1 {
+        margin-top: 4cm;
+    }
+  </style>
+    <p>{{ region.description }}</p>
+
+    <h2>Top Cities in {{ region.name }} Region Cameroon</h2>
+    <ul>
+      {% if top_cities %}
+          {% for city in top_cities %}
+              <li>
+                    {{ city.city_name }}
+              </li>
+          {% endfor %}
+      {% else %}
+          <p>No top cities data available for this region.</p>
+      {% endif %}
+    </ul>
+  
+  {% endblock %}
