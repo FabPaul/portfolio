@@ -162,9 +162,15 @@ def city_details(city_id):
         data = response.json()
 
         weather_data = {
-            "temperature": round(data["main"]["temp"] - 273.15, 1),
-            "description": data["weather"][0]["description"],
-        }
+      "temperature": round(data["main"]["temp"] - 273.15, 1),
+      "feels_like": round(data["main"]["feels_like"] - 273.15, 1),
+      "description": data["weather"][0]["description"],
+      "wind": {
+        "speed": data["wind"]["speed"],
+        "deg": data["wind"]["deg"]
+      },
+      "precipitation": None
+    }
 
     except requests.exceptions.RequestException as e:
         print(f"Error fetching weather data: {e}")
@@ -181,9 +187,9 @@ def get_image(filename):
     return send_from_directory("static/images", filename)
 
 
-@app.route("/register", methods=["GET", "POST"])
+"""@app.route("/register", methods=["GET", "POST"])
 def register():
-    """Handle registration requests"""
+    ""Handle registration requests""
     if request.method == "GET":
         return render_template("registration.html")
     elif request.method == "POST":
@@ -192,7 +198,7 @@ def register():
         create_user(username, password)
         return redirect(url_for('login'))
     else:
-        return "Method not allowed", 405
+        return "Method not allowed", 405"""
 
 
 """app.add_url_rule("/login", "login", login, methods=["POST"])
