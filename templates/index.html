@@ -1,8 +1,5 @@
-{% extends "base.html" %}
-
-{% block title %}See-Say Cameroon{% endblock %}
-
-{% block content %}
+{% extends "base.html" %} {% block title %}See-Say Cameroon{% endblock %} {%
+block content %}
 <style>
   h1 {
     margin-top: 4cm;
@@ -12,15 +9,15 @@
 <h1>Explore Cameroon's Regions</h1>
 
 <div class="image-grid">
-    {% for region in regions %}
-    <div class="region-card">
-        <a href="{{ url_for('region_details', region_id=region['id']) }}">
-            <div class="image-details">
-                <h3><b>{{ region['name'] }}</b></h3>
-                <p>{{ region['description'] }}</p>
-            </div>
-        </a>
-    </div>
-    {% endfor %}
+  {% for region in regions %}
+  <div class="region-card">
+    <a href="{{ url_for('region_details', region_id=region['id']) }}">
+      <div class="image-details">
+        <h3><b>{{ region['name'] }}</b></h3>
+        <p>{{ region['description'] }}</p>
+      </div>
+    </a>
+  </div>
+  {% endfor %}
 </div>
 {% endblock %}

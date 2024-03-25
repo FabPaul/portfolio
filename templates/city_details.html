@@ -1,29 +1,29 @@
-{% extends "base.html" %}
-
-{% block title %}See-Say Cameroon - {{ city.city_name }}{% endblock %}
-{% block content %}
-  <h1>{{ city.city_name }}</h1>
-  <style>
-    h1 {
-        margin-top: 4cm;
-    }
-  </style>
-  <p>{{ city.description }}</p>  <h2>Weather</h2>
-  {% if weather_data %}
-  <p>Temperature: {{ weather_data.temperature }}°C</p>
-  <p>Feels like: {{ weather_data.feels_like }}°C</p>
-  <p>Description: {{ weather_data.description }}</p>
-  <p>Humidity: {{ weather_data.humidity }}%</p>
-  <ul>
-    <li>Wind speed: {{ weather_data.wind.speed }} m/s</li>
-    <li>Wind direction: {{ weather_data.wind.deg }}° (refer to documentation for interpretation)</li>
-  </ul>
-  {% if weather_data.rain %}  <p>Precipitation: {{ weather_data.rain['1h'] }} mm (last hour)</p>
-  {% else %}
-    <p>Precipitation data not available.</p>
-  {% endif %}
+{% extends "base.html" %} {% block title %}See-Say Cameroon - {{ city.city_name
+}}{% endblock %} {% block content %}
+<h1>{{ city.city_name }}</h1>
+<style>
+  h1 {
+    margin-top: 4cm;
+  }
+</style>
+<p>{{ city.description }}</p>
+<h2>Weather</h2>
+{% if weather_data %}
+<p>Temperature: {{ weather_data.temperature }}°C</p>
+<p>Feels like: {{ weather_data.feels_like }}°C</p>
+<p>Description: {{ weather_data.description }}</p>
+<p>Humidity: {{ weather_data.humidity }}%</p>
+<ul>
+  <li>Wind speed: {{ weather_data.wind.speed }} m/s</li>
+  <li>
+    Wind direction: {{ weather_data.wind.deg }}° (refer to documentation for
+    interpretation)
+  </li>
+</ul>
+{% if weather_data.rain %}
+<p>Precipitation: {{ weather_data.rain['1h'] }} mm (last hour)</p>
 {% else %}
-  <p>Weather data not available for this city.</p>
-{% endif %}
-
-{% endblock %}
+<p>Precipitation data not available.</p>
+{% endif %} {% else %}
+<p>Weather data not available for this city.</p>
+{% endif %} {% endblock %}

@@ -2,7 +2,7 @@
 """Flask"""
 
 
-from flask import Flask, request, render_template, redirect, url_for, flash, send_from_directory
+from flask import Flask, request, render_template, redirect, url_for, flash, send_from_directory, jsonify
 import mysql.connector
 import os
 from db_utils import db_config, connect_to_database, create_user
@@ -86,12 +86,6 @@ def submit_report():
 @app.route("/home")
 def home():
     """Home route displaying recent places and weather for a city"""
-    city = request.args.get("city")
-    weather_data = None
-
-    if city:
-        weather_data = get_weather_data(city)
-
     connection = connect_to_database()
     cursor = connection.cursor(dictionary=True)
 
@@ -101,7 +95,7 @@ def home():
     cursor.close()
     connection.close()
 
-    return render_template("index.html", regions=regions, weather_data=weather_data)
+    return render_template("index.html", regions=regions)
 
 
 @app.route("/top_cities/<int:region_id>")
@@ -244,6 +238,18 @@ def report_form():
     return render_template("report.html")
 
 
+@app.route("/location/<lat>/<lng>")
+def get_location_name(lat, lng):
+  """Get location by user's longitude and latitudes, using api"""
+  url = f"https://nominatim.openstreetmap.org/reverse?format=json&lat={lat}&lon={lng}"
+  response = requests.get(url)
+  if response.status_code == 200:
+    data = response.json()
+    return jsonify({"address": data.get("display_name")})
+  else:
+    print(f"Error fetching location name: {response.status_code}")
+    return jsonify({"error": "Failed to retrieve location name"})
+
 @app.route("/recent_reports", methods=["GET"], strict_slashes=False)
 def recent_reports():
     """Display recent reports"""
@@ -251,7 +257,7 @@ def recent_reports():
     cursor = connection.cursor(dictionary=True)
 
     sql = """SELECT * FROM incidents WHERE reported_at >=%s
-    AND status IN (%s, %s) ORDER BY incident_type"""
+    AND status IN (%s, %s) ORDER BY reported_at DESC"""
     threshold = datetime.now() - timedelta(days=7)
     values = (threshold, "pending", "investigating")
 

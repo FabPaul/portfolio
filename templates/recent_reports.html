@@ -1,25 +1,31 @@
-{% extends 'base.html' %}
-
-{% block title %}See-Say Cameroon - Recent Reports{% endblock %}
-
-{% block content %}
-    <div class="container">
-        <h1 class="heading">Recent Reports</h1>
-        {% if reports %}
-        <div class="reports-container">
-            {% for report in reports %}
-            {% if report.is_resolved != True %} 
-            <div class="report-card">
-                <h2 class="report-type">{{ report.incident_type }}</h2>
-                <p class="report-location"><strong>Location:</strong> {{ report.location }}</p>
-                <p class="report-details"><strong>Details:</strong> {{ report.details[:100] }}... <a href="{{ url_for('full_report', report_id=report.id) }}" target="_blank">(see full report)</a></p>
-                <p class="report-location"><strong>Status:</strong> {{ report.status }}</p>
-            </div>
-            {% endif %}
-            {% endfor %}
-        </div>
-        {% else %}
-        <p class="no-reports">No recent reports found.</p>
-        {% endif %}
+{% extends 'base.html' %} {% block title %}See-Say Cameroon - Recent Reports{%
+endblock %} {% block content %}
+<div class="container">
+  <h1 class="heading">Recent Reports</h1>
+  {% if reports %}
+  <div class="reports-container">
+    {% for report in reports %} {% if report.is_resolved != True %}
+    <div class="report-card">
+      <h2 class="report-type">{{ report.incident_type }}</h2>
+      <p class="report-location">
+        <strong>Location:</strong> {{ report.location }}
+      </p>
+      <p class="report-details">
+        <strong>Details:</strong> {{ report.details[:100] }}...
+        <a
+          href="{{ url_for('full_report', report_id=report.id) }}"
+          target="_blank"
+          >(see full report)</a
+        >
+      </p>
+      <p class="report-location">
+        <strong>Status:</strong> {{ report.status }}
+      </p>
     </div>
+    {% endif %} {% endfor %}
+  </div>
+  {% else %}
+  <p class="no-reports">No recent reports found.</p>
+  {% endif %}
+</div>
 {% endblock %}

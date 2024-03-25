@@ -1,58 +1,113 @@
-{% extends 'base.html' %}
+{% extends 'base.html' %} {% block title %}See-Say Cameroon{% endblock %} {%
+block content %}
+<h1>Submit a Report</h1>
+<style>
+  h1 {
+    margin-top: 4cm;
+  }
 
-{% block title %}See-Say Cameroon{% endblock %}
+  .form-group {
+    margin-bottom: 1cm;
+  }
+</style>
+{% with messages = get_flashed_messages(with_categories=true) %} {% if messages
+%} {% for category, message in messages %}
+<div class="alert alert-{{ category }}">{{ message }}</div>
+{% endfor %} {% endif %} {% endwith %}
+<form action="/report" method="POST">
+  <div class="form-group">
+    <label for="incident_type">Incident Type:</label>
+    <select name="incident_type" id="incident_type" required>
+      <option value="Security">Security</option>
+      <option value="Harassment">Harassment</option>
+      <option value="Infrastructure">Infrastructure</option>
+      <option value="weather">Weather Condition</option>
+      <option value="gaz">Fuel shortage</option>
+      <option value="power">Power Supply</option>
+      <option value="Other">Other</option></select
+    ><br />
+  </div>
+  <script>
+    function getLocation() {
+      // Checks if the browser suppoerts Geolocation using navigator.geolocation
+      if (navigator.geolocation) {
+        // if it does, call nav.geo.getCurrentPosition
+        navigator.geolocation.getCurrentPosition(showPosition, showError);
+      } else {
+        // if not, tell the user geolocation isn't available
+        alert("Geolocation is not supported by this browser.");
+      }
+    }
 
-{% block content %}
-    <h1> Submit a Report </h1>
-    <style>
-        h1 {
-            margin-top: 4cm;
-        }
-        .form-group {
-            margin-bottom: 1cm;
-        }
-    </style>
-    {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-            {% for category, message in messages %}
-                <div class="alert alert-{{ category }}">
-                    {{ message }}
-                </div>
-            {% endfor %}
-        {% endif %}
-    {% endwith %}
-    <form action="/report" method="POST">
-        <div class="form-group">
-            <label for="incident_type">Incident Type:</label>
-            <select name="incident_type" id="incident_type" required>
-                <option value="Security">Security</option>
-                <option value="Harassment">Harassment</option>
-                <option value="Infrastructure">Infrastructure</option>
-                <option value="weather">Weather Condition</option>
-                <option value="gaz">Fuel shortage</option>
-                <option value="power">Power Supply</option>
-                <option value="Other">Other</option>
-            </select><br>
-        </div>
-        <div class="form-group">
-            <label for="details">Details:</label><br>
-            <textarea name="details" id="details" required></textarea><br>
-        </div>
-        <div class="form-group">
-            <label for="location">Location: </label><br>
-            <input type="text" id="location" name="location"><br>
-        </div>
-        <div class="form-group">
-            <label for="status">Status:</label><br>
-            <select id="status" name="status" required>
-                <option value="pending" selected>Pending</option>
-                <option value="investigating">Under Investigation</option>
-                <option value="resolved">Resolved</option>
-            </select><br>
-        </div>
-        <button type="submit">Submit Report</button>
-    </form>
-    {% if crsf_token %}
-    <input type="hidden" name="crsf_token" value="{{ crsf_token }}">
-    {% endif %}
-{% endblock %}
+    function showPosition(position) {
+      // Called when user's positione is succesfully retrieved
+      // get the latitudes and the longitudes
+      const lat = position.coords.latitude;
+      const lng = position.coords.longitude;
+
+      // Update location input with coordinates (for reference)
+      document.getElementById("location").value = `${lat}, ${lng}`;
+
+      // Call the new function to get address from coordinates
+      fetchLocationName(lat, lng);
+    }
+
+    function fetchLocationName(lat, lng) {
+      const url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`;
+      fetch(url)
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.display_name) {
+            // Update location input with address
+            document.getElementById("location").value = data.display_name;
+          } else {
+            // Handle error if address not found
+            document.getElementById("location-error").innerHTML =
+              "Failed to find location name.";
+          }
+        })
+        .catch((error) => {
+          // Handle network or other errors
+          console.error("Error fetching location name:", error);
+          document.getElementById("location-error").innerHTML =
+            "Error retrieving location name.";
+        });
+    }
+
+    function showError(error) {
+      switch (error.code) {
+        case error.PERMISSION_DENIED:
+          alert("User denied the request for Geolocation.");
+          break;
+        case error.POSITION_UNAVAILABLE:
+          alert("Location information is unavailable.");
+          break;
+        case error.TIMEOUT:
+          alert("The request to get user location timed out.");
+          break;
+        case error.UNKNOWN_ERROR:
+          alert("An unknown error occurred.");
+          break;
+      }
+    }
+  </script>
+  <button onclick="getLocation()">Get Location</button>
+  <input type="text" id="location" name="location" />
+  <div class="form-group">
+    <label for="details">Details:</label><br />
+    <textarea name="details" id="details" required></textarea><br />
+  </div>
+
+  <div class="form-group">
+    <label for="status">Status:</label><br />
+    <select id="status" name="status" required>
+      <option value="pending" selected>Pending</option>
+      <option value="investigating">Under Investigation</option>
+      <option value="resolved">Resolved</option></select
+    ><br />
+  </div>
+  <button type="submit">Submit Report</button>
+</form>
+{% if crsf_token %}
+<input type="hidden" name="crsf_token" value="{{ crsf_token }}" />
+{% endif %} {% endblock %}
