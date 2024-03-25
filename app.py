@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Flask"""
+"""See-Say Cameroon route"""
 
 
 from flask import Flask, request, render_template, redirect, url_for, flash, send_from_directory, jsonify
@@ -85,7 +85,7 @@ def submit_report():
 @app.route("/")
 @app.route("/home")
 def home():
-    """Home route displaying recent places and weather for a city"""
+    """Home screen for display of all the 10 regions of cameroon"""
     connection = connect_to_database()
     cursor = connection.cursor(dictionary=True)
 
@@ -100,6 +100,7 @@ def home():
 
 @app.route("/top_cities/<int:region_id>")
 def region_details(region_id):
+    """Display every detail about a region"""
     connection = connect_to_database()
     cursor = connection.cursor(dictionary=True)
 
@@ -132,6 +133,7 @@ def region_details(region_id):
 
 @app.route("/cities/<int:city_id>")
 def city_details(city_id):
+    """Display the weather of any top city clicked"""
     connection = connect_to_database()
     cursor = connection.cursor(dictionary=True)
 
@@ -178,6 +180,7 @@ def city_details(city_id):
 
 @app.route("/images/<filename>")
 def get_image(filename):
+    """Load images"""
     return send_from_directory("static/images", filename)
 
 
