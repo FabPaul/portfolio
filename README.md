@@ -85,5 +85,5 @@ I want to sincerely appreciate the following who made it possible for this proje
 
  - My wife, Maurelle for continuous motivation, even when I felt like giving up several times due to the difficulty of going through ALX.
 
-##### - Community
+#####  Community
  - [ALX](https://www.alxafrica.com/). I dreamed of becoming a software engineer, ALX took the bet on me and now, I can build web applications. Forver grateful to [Julien Barbier](https://twitter.com/julienbarbier42) and [Fred Swaniker](https://twitter.com/FredSwaniker)
