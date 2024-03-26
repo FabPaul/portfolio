@@ -198,10 +198,6 @@ def register():
         return "Method not allowed", 405"""
 
 
-"""app.add_url_rule("/login", "login", login, methods=["POST"])
-app.add_url_rule("/logout", "/logout", logout, methods=["GET"])"""
-
-
 """@app.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
