@@ -16,14 +16,8 @@
 <ul>
   <li>Wind speed: {{ weather_data.wind.speed }} m/s</li>
   <li>
-    Wind direction: {{ weather_data.wind.deg }}° (refer to documentation for
-    interpretation)
+    Wind direction: {{ weather_data.wind.deg }}° 
   </li>
 </ul>
-{% if weather_data.rain %}
-<p>Precipitation: {{ weather_data.rain['1h'] }} mm (last hour)</p>
-{% else %}
-<p>Precipitation data not available.</p>
-{% endif %} {% else %}
 <p>Weather data not available for this city.</p>
 {% endif %} {% endblock %}

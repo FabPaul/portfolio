@@ -161,11 +161,11 @@ def city_details(city_id):
       "temperature": round(data["main"]["temp"] - 273.15, 1),
       "feels_like": round(data["main"]["feels_like"] - 273.15, 1),
       "description": data["weather"][0]["description"],
+      "humidity": data["main"]["humidity"],
       "wind": {
         "speed": data["wind"]["speed"],
         "deg": data["wind"]["deg"]
       },
-      "precipitation": None
     }
 
     except requests.exceptions.RequestException as e:
