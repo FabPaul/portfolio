@@ -253,6 +253,7 @@ def get_location_name(lat, lng):
     print(f"Error fetching location name: {response.status_code}")
     return jsonify({"error": "Failed to retrieve location name"})
 
+
 @app.route("/recent_reports", methods=["GET"], strict_slashes=False)
 def recent_reports():
     """Display recent reports"""
