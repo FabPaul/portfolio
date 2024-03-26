@@ -2,7 +2,7 @@
 
 Welcome to the See-Say cameroon project! This documentation serves as a comprehensive detailing of the project development process, functionalities, and future potential of this user-friendly platform designed to empower citizens in Cameroon to report incidents and contribute to a safer environment.
 
-![Home](./static/images/seesay.png)
+![Home](./static/seesay.png)
 
 ## Overview
 See-Say Cameroon is a web-based application that allows users to see Cameroon's finest attractions, submit reports about various incidents they encounter in their communities. These incidents can range from security concerns and harassments to infrastructure issues and weather conditions. The platform aims to brigde the gap beterrn citizens and authorities by facilitating efficient and fostering improved communication.
